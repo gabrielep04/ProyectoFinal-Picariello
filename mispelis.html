@@ -8,7 +8,59 @@
 </head>
 <body>
     <div class="header">
+        <div>
+            <a href="./index.html" class="lista-pelis">Volver a la lista de pelis</a>
+        </div>
         <h1 class="titulo">Mi lista de pelis</h1>
     </div>
+
+    <div class="container">
+        <h2 class="titulo2">Películas guardadas</h2>
+        <div class="pelis">
+            <div class="pelis-container" id="pelis-container"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const contenedorTarjetas = document.getElementById("pelis-container");
+            let misPeliculas = JSON.parse(localStorage.getItem("misPeliculas")) || [];
+
+            const renderizarLista = () => {
+                contenedorTarjetas.innerHTML = "";
+                if (misPeliculas.length === 0) {
+                    contenedorTarjetas.innerHTML = "<p>No tienes películas en tu lista.</p>";
+                    return;
+                }
+                misPeliculas.forEach(pelicula => {
+                    const tarjeta = document.createElement("div");
+                    tarjeta.classList.add("card");
+                    tarjeta.innerHTML = `
+                        <img src="https://image.tmdb.org/t/p/w200${pelicula.poster_path}" alt="${pelicula.title}" />
+                        <div class="card-content">
+                            <h3>${pelicula.title}</h3>
+                            <p>Año: ${pelicula.release_date ? pelicula.release_date.split('-')[0] : "N/A"}</p>
+                            <p>Popularidad: ${pelicula.popularity.toFixed(1)}</p>
+                            <button class="button btn-eliminar">Eliminar de mi lista :(</button>
+                        </div>
+                    `;
+
+                    // Funcionalidad de “Eliminar de mi lista”
+                    const btnEliminar = tarjeta.querySelector(".btn-eliminar");
+                    btnEliminar.addEventListener("click", () => {
+                        // Filtrar la película eliminada
+                        misPeliculas = misPeliculas.filter(p => p.id !== pelicula.id);
+                        localStorage.setItem("misPeliculas", JSON.stringify(misPeliculas));
+                        // Eliminar tarjeta
+                        renderizarLista();
+                    });
+
+                    contenedorTarjetas.appendChild(tarjeta);
+                });
+            };
+
+            renderizarLista();
+        });
+    </script>
 </body>
 </html>
