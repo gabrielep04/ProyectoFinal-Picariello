@@ -3,8 +3,9 @@ const cargarPeliculas = async () => {
     const contenedorTarjetas = document.getElementById("pelis-container");
     contenedorTarjetas.innerHTML = ""; // limpiar antes
 
-    const apiKey = "1e13ae34471da399ada080287af489de"; // pon aquí tu clave TMDb
+    const apiKey = "1e13ae34471da399ada080287af489de";
 
+    // Se hace un fetch a las pelis mas populares
     try {
         const response = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=es-ES&page=1`);
         const data = await response.json();
@@ -18,10 +19,12 @@ const cargarPeliculas = async () => {
 
                 tarjeta.innerHTML = `
                     <img src="https://image.tmdb.org/t/p/w200${pelicula.poster_path}" alt="${pelicula.title}" />
-                    <h3>${pelicula.title}</h3>
-                    <p>Año: ${pelicula.release_date ? pelicula.release_date.split('-')[0] : "N/A"}</p>
-                    <p>Popularidad: ${pelicula.popularity.toFixed(1)}</p>
-                    <button>Agregar a mi lista :)</button>
+                    <div class="card-content">
+                        <h3>${pelicula.title}</h3>
+                        <p>Año: ${pelicula.release_date ? pelicula.release_date.split('-')[0] : "N/A"}</p>
+                        <p>Popularidad: ${pelicula.popularity.toFixed(1)}</p>
+                        <button class="button">Agregar a mi lista :)</button>
+                    </div>
                 `;
 
                 contenedorTarjetas.appendChild(tarjeta);
@@ -37,3 +40,7 @@ const cargarPeliculas = async () => {
 }
 
 cargarPeliculas();
+
+const listaPeliculas = async () => {
+    
+}
